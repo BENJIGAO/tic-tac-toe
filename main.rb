@@ -27,15 +27,28 @@ class TicTacToe
     until valid_move?(move)
       move = player.choose_move(board)
     end
-    update_board(move)
+    update_board(move, player)
   end
 
-  def update_board(move)
-    
+  def update_board(move, player)
+    case move
+    when 1..3 then 
+      board[0][move - 1] = player.symbol
+      p board
+    when 4..6 then board[1][move - 4] = player.symbol
+    when 7..9 then board[2][move - 7] = player.symbol
+    end
+  end
+
+  def game_over?
+    puts "Wow, I actually got here?"
+    sleep 2
   end
 end
 
 class Player 
+  attr_reader :symbol
+
   def initialize(name, symbol)
     @name = name
     @symbol = symbol
@@ -56,6 +69,7 @@ def tic_tac_toe()
     until tic_tac_toe.game_over
       tic_tac_toe.play_turn(player1)
       break if tic_tac_toe.game_over?
+      puts "switching to next player..."
       tic_tac_toe.play_turn(player2)
       break if tic_tac_toe.game_over?
     end
@@ -64,5 +78,6 @@ end
 
 tic_tac_toe
 
-  
-
+# tmp_game = TicTacToe.new("Bob", "George")
+# tmp_game.board[0][1] = "test"
+# p tmp_game.board
