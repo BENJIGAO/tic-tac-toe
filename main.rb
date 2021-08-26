@@ -1,12 +1,13 @@
 require 'pry-byebug'
 
+# Specific to tic-tac-toe. Validates user input
 module Validation
   def valid_move?(move)
     move.between?(1, 9) && !board.flatten[move - 1]
   end
 end
 
-
+# Represents a two-player game of tic-tac-toe. Has all functionality for terminal-based game. 
 class TicTacToe
   include Validation
 
@@ -34,20 +35,21 @@ class TicTacToe
 
   def update_board(move, player)
     case move
-    when 1..3 then 
-      board[0][move - 1] = player.symbol
-      p board
+    when 1..3 then board[0][move - 1] = player.symbol
     when 4..6 then board[1][move - 4] = player.symbol
     when 7..9 then board[2][move - 7] = player.symbol
     end
   end
 
-  def game_over?
-    win_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  def winner?(player)
+    win_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+    player_symbol = player.symbol
+    board.flatten.map {|ele| puts "some code"}
   end
 end
 
-class Player 
+# Represents a player playing tic-tac-toe
+class Player
   attr_reader :symbol
 
   def initialize(name, symbol)
@@ -57,28 +59,24 @@ class Player
 
   def choose_move(board)
     p board
-    puts "Choose your play: "
+    puts 'Choose your play: '
     gets.chomp.to_i
   end
 end
 
 def tic_tac_toe()
   loop do
-    player1 = Player.new("George", "X")
-    player2 = Player.new("Bob", "O")
+    player1 = Player.new('George', 'X')
+    player2 = Player.new('Bob', 'O')
     tic_tac_toe = TicTacToe.new(player1, player2)
     until tic_tac_toe.game_over
       tic_tac_toe.play_turn(player1)
-      break if tic_tac_toe.game_over?
-      puts "switching to next player..."
+      break if tic_tac_toe.winner?(player1)
+
       tic_tac_toe.play_turn(player2)
-      break if tic_tac_toe.game_over?
+      break if tic_tac_toe.winner?(player2)
     end
   end
 end
 
 tic_tac_toe
-
-# tmp_game = TicTacToe.new("Bob", "George")
-# tmp_game.board[0][1] = "test"
-# p tmp_game.board
