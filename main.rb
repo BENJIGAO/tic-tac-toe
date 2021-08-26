@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 module Validation
   def valid_move?(move)
     move.between?(1, 9) && !board.flatten[move]
@@ -41,8 +43,7 @@ class TicTacToe
   end
 
   def game_over?
-    puts "Wow, I actually got here?"
-    sleep 2
+    false
   end
 end
 
