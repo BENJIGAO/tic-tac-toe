@@ -2,7 +2,7 @@ require 'pry-byebug'
 
 module Validation
   def valid_move?(move)
-    move.between?(1, 9) && !board.flatten[move]
+    move.between?(1, 9) && !board.flatten[move - 1]
   end
 end
 
