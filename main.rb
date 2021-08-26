@@ -1,3 +1,10 @@
+module Validation
+  def valid_move?(move)
+    move.between?(1, 9) && !board.flatten[move]
+  end
+end
+
+
 class TicTacToe
   include Validation
 
@@ -23,7 +30,9 @@ class TicTacToe
     update_board(move)
   end
 
-  def update_board
+  def update_board(move)
+    
+  end
 end
 
 class Player 
@@ -33,6 +42,9 @@ class Player
   end
 
   def choose_move(board)
+    p board
+    puts "Choose your play: "
+    gets.chomp.to_i
   end
 end
 
@@ -46,8 +58,11 @@ def tic_tac_toe()
       break if tic_tac_toe.game_over?
       tic_tac_toe.play_turn(player2)
       break if tic_tac_toe.game_over?
+    end
   end
 end
+
+tic_tac_toe
 
   
 
