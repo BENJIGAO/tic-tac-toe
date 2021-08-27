@@ -18,7 +18,7 @@ class TicTacToe
     @player1 = player1
     @player2 = player2
     @board = [
-      ['X', 'X', nil],
+      [nil, nil, nil],
       [nil, nil, nil],
       [nil, nil, nil]
     ]
@@ -26,9 +26,16 @@ class TicTacToe
   end
 
   def play_turn(player)
-    print_board
-    move = player.choose_move(board)
-    move = player.choose_move(board) until valid_move?(move)
+    move = nil
+    loop do
+      print_board
+      move = player.choose_move
+      unless valid_move?(move)
+        puts 'Invalid entry. Please try again'
+        next
+      end
+      break
+    end
     update_board(move, player)
   end
 
@@ -65,7 +72,7 @@ class TicTacToe
   end
 
   def print_row(row, row_num)
-    row = row.each_with_index.map { |symbol, index| !symbol ? (row_num - 1) * 3 + index + 1 : symbol }
+    row = row.each_with_index.map { |symbol, index| !symbol ? (row_num) * 3 + index + 1 : symbol }
     1.upto(3) do |row_level|
       if row_level == 2
         terminal_output = row.reduce('') do |output, symbol|
@@ -80,7 +87,8 @@ class TicTacToe
   end
 
   def print_board
-    board.each_with_index { |row, row_num| print_row(row, row_num)}
+    board.each_with_index { |row, row_num| print_row(row, row_num) }
+    puts ""
   end
 end
 
@@ -93,9 +101,9 @@ class Player
     @symbol = symbol
   end
 
-  def choose_move(board)
-    p board
-    puts 'Choose your play: '
+  def choose_move
+    puts "Hey #{name}!"
+    print 'Select your play by entering a number 1-9: '
     gets.chomp.to_i
   end
 end
