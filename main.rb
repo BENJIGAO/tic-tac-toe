@@ -25,6 +25,11 @@ class TicTacToe
     @game_over = false
   end
 
+  def self.introduction
+    puts "Welcome to Tic Tac Toe!"
+    sleep 1
+  end
+
   def play_turn(player)
     move = nil
     loop do
@@ -32,6 +37,7 @@ class TicTacToe
       move = player.choose_move
       unless valid_move?(move)
         puts 'Invalid entry. Please try again'
+        sleep 2
         next
       end
       break
@@ -54,7 +60,8 @@ class TicTacToe
     return if players_board.length < 3
 
     if win_combinations.any? { |combo| (players_board - combo).length == players_board.length - 3 }
-      puts "Congratulations #{player.name}, you are the tic-tac-toe master!"
+      print_board
+      puts "\nCongratulations #{player.name}, you are the tic-tac-toe master!"
       return true
     end
     false
@@ -106,12 +113,31 @@ class Player
     print 'Select your play by entering a number 1-9: '
     gets.chomp.to_i
   end
+
+  def self.create_player(player)
+    name = nil
+    loop do 
+      print "Enter #{player}'s name. (only letters/numbers/spaces/apostrophes accepted): "
+      name = gets.chomp
+      break unless /^(?![a-z0-9' ]*$)/i.match(name)
+    end
+
+    symbol = nil
+    loop do
+      print "Enter #{player}'s symbol (one character): "
+      symbol = gets.chomp
+      break if symbol.length == 1
+    end
+    puts ""
+    Player.new(name, symbol)
+  end
 end
 
 def tic_tac_toe()
   loop do
-    player1 = Player.new('George', 'X')
-    player2 = Player.new('Bob', 'O')
+    TicTacToe.introduction
+    player1 = Player.create_player("player 1")
+    player2 = Player.create_player("player 2")
     tic_tac_toe = TicTacToe.new(player1, player2)
     until tic_tac_toe.game_over
       tic_tac_toe.play_turn(player1)
