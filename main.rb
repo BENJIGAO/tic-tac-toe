@@ -26,6 +26,7 @@ class TicTacToe
   end
 
   def play_turn(player)
+    print_board
     move = player.choose_move(board)
     until valid_move?(move)
       move = player.choose_move(board)
@@ -63,6 +64,25 @@ class TicTacToe
       break if /\A[Yn]\Z/.match(response)
     end
     response == 'Y'
+  end
+
+  def print_row(row, row_num)
+    row = row.each_with_index.map { |symbol, index| !symbol ? (row_num - 1) * 3 + index + 1 : symbol }
+    1.upto(3) do |row_level|
+      if row_level == 2
+        terminal_output = row.reduce('') do |output, symbol|
+          output + "   #{symbol}   |"
+        end
+        puts terminal_output[0..-2]
+      else
+        puts '       |' * 2
+      end
+    end
+    puts '-' * 23 unless row_num == 2
+  end
+
+  def print_board
+    board.each_with_index { |row, row_num| print_row(row, row_num)}
   end
 end
 
