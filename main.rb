@@ -45,9 +45,22 @@ class TicTacToe
     win_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
     players_board = []
     board.flatten.each_with_index { |square, index| players_board.push(index + 1) if square == player.symbol }
-    p players_board
+    return if players_board.length < 3
+
+    if win_combinations.any? { |combo| (players_board - combo).length == players_board.length - 3 }
+      puts "Congratulations #{player.name}, you are the tic-tac-toe master!"
+      true
+    end
     false
   end
+
+  def exit?
+    sleep 1
+    loop do
+      puts "Do you wish to exit? [Y/n]"
+      response = gets.chomp
+      break if /[ab]/.match(response)
+    end
 end
 
 # Represents a player playing tic-tac-toe
@@ -78,6 +91,7 @@ def tic_tac_toe()
       tic_tac_toe.play_turn(player2)
       break if tic_tac_toe.winner?(player2)
     end
+    break if tic_tac_toe.exit?
   end
 end
 
