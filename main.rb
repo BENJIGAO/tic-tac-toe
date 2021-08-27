@@ -18,7 +18,7 @@ class TicTacToe
     @player1 = player1
     @player2 = player2
     @board = [
-      [nil, nil, nil],
+      ['X', 'X', nil],
       [nil, nil, nil],
       [nil, nil, nil]
     ]
@@ -49,23 +49,26 @@ class TicTacToe
 
     if win_combinations.any? { |combo| (players_board - combo).length == players_board.length - 3 }
       puts "Congratulations #{player.name}, you are the tic-tac-toe master!"
-      true
+      return true
     end
     false
   end
 
   def exit?
     sleep 1
+    response = nil
     loop do
-      puts "Do you wish to exit? [Y/n]"
+      puts 'Do you wish to exit? [Y/n]'
       response = gets.chomp
-      break if /[ab]/.match(response)
+      break if /\A[Yn]\Z/.match(response)
     end
+    response == 'Y'
+  end
 end
 
 # Represents a player playing tic-tac-toe
 class Player
-  attr_reader :symbol
+  attr_reader :symbol, :name
 
   def initialize(name, symbol)
     @name = name
