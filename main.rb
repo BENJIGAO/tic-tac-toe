@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 # Specific to tic-tac-toe. Validates user input
 module Validation
   def valid_move?(move)
