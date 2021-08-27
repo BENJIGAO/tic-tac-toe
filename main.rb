@@ -20,7 +20,7 @@ class TicTacToe
     @board = [
       [nil, nil, nil],
       [nil, nil, nil],
-      [nil, nil, nil],
+      [nil, nil, nil]
     ]
     @game_over = false
   end
@@ -43,8 +43,10 @@ class TicTacToe
 
   def winner?(player)
     win_combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
-    player_symbol = player.symbol
-    board.flatten.map {|ele| puts "some code"}
+    players_board = []
+    board.flatten.each_with_index { |square, index| players_board.push(index + 1) if square == player.symbol }
+    p players_board
+    false
   end
 end
 
