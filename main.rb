@@ -28,9 +28,7 @@ class TicTacToe
   def play_turn(player)
     print_board
     move = player.choose_move(board)
-    until valid_move?(move)
-      move = player.choose_move(board)
-    end
+    move = player.choose_move(board) until valid_move?(move)
     update_board(move, player)
   end
 
