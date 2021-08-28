@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Specific to tic-tac-toe. Validates user input
 module Validation
   def valid_move?(move)
@@ -8,17 +10,14 @@ end
 # Handles errors, specifically when user exits using ctrl+d (presently)
 module ErrorHandling
   def gets_with_error_handling
-    begin
-      gets.chomp
-    rescue
-      puts ""
-      exit
-    end
+    gets.chomp
+  rescue StandardError => e
+    puts ''
+    exit
   end
 end
 
-
-# Represents a two-player game of tic-tac-toe. Has all functionality for terminal-based game. 
+# Represents a two-player game of tic-tac-toe. Has all functionality for terminal-based game.
 class TicTacToe
   include Validation
   include ErrorHandling
@@ -46,7 +45,7 @@ class TicTacToe
 
   def self.introduction
     puts "Welcome to @BENJIGAO's Tic Tac Toe! \n\nIt's a two player game where the first person to place three of their marks in a diagonal, horizontal, or vertical line wins. \n\nHope you like it!"
-    puts ""
+    puts ''
     sleep 2
   end
 
@@ -66,6 +65,7 @@ class TicTacToe
   end
 
   def update_board(move, player)
+    puts ''
     case move
     when 1..3 then board[0][move - 1] = player.symbol
     when 4..6 then board[1][move - 4] = player.symbol
@@ -92,14 +92,14 @@ class TicTacToe
     response = nil
     loop do
       puts "\nDo you wish to exit? [Y/n]"
-      response = gets_with_error_handling 
+      response = gets_with_error_handling
       break if /\A[Yn]\Z/.match(response)
     end
     response == 'Y'
   end
 
   def print_row(row, row_num)
-    row = row.each_with_index.map { |symbol, index| !symbol ? (row_num) * 3 + index + 1 : symbol }
+    row = row.each_with_index.map { |symbol, index| !symbol ? row_num * 3 + index + 1 : symbol }
     1.upto(3) do |row_level|
       if row_level == 2
         terminal_output = row.reduce('') do |output, symbol|
@@ -115,7 +115,7 @@ class TicTacToe
 
   def print_board
     board.each_with_index { |row, row_num| print_row(row, row_num) }
-    puts ""
+    puts ''
   end
 end
 
@@ -140,7 +140,7 @@ class Player
 
   def self.create_player(player)
     name = nil
-    loop do 
+    loop do
       print "Enter #{player}'s name (only letters/numbers/spaces/apostrophes accepted): "
       name = gets_with_error_handling
       break unless /^(?![a-z0-9' ]*$)/i.match(name)
@@ -152,16 +152,16 @@ class Player
       symbol = gets.chomp
       break if symbol.length == 1
     end
-    puts ""
+    puts ''
     Player.new(name, symbol)
   end
 end
 
-def tic_tac_toe()
+def tic_tac_toe
   loop do
     TicTacToe.introduction
-    player1 = Player.create_player("player 1")
-    player2 = Player.create_player("player 2")
+    player1 = Player.create_player('player 1')
+    player2 = Player.create_player('player 2')
     tic_tac_toe = TicTacToe.new(player1, player2)
     loop do
       tic_tac_toe.play_turn(player1)
