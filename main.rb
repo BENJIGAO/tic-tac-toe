@@ -5,12 +5,24 @@ module Validation
   end
 end
 
+module ErrorHandling
+  def gets_with_error_handling
+    begin
+      gets.chomp
+    rescue => exception
+      puts ""
+      exit
+    end
+  end
+end
+
+
 # Represents a two-player game of tic-tac-toe. Has all functionality for terminal-based game. 
 class TicTacToe
   include Validation
+  include ErrorHandling
 
   attr_accessor :board
-  attr_reader :game_over
 
   def initialize(player1, player2)
     @player1 = player1
@@ -20,12 +32,21 @@ class TicTacToe
       [nil, nil, nil],
       [nil, nil, nil]
     ]
-    @game_over = false
+  end
+
+  def tie?
+    if board.flatten.compact == board.flatten
+      print_board
+      puts "\nOh wow! Looks like it's a tie."
+      return true
+    end
+    false
   end
 
   def self.introduction
-    puts "Welcome to Tic Tac Toe!"
-    sleep 1
+    puts "Welcome to @BENJIGAO's Tic Tac Toe! \n\nIt's a two player game where the first person to place three of their marks in a diagonal, horizontal, or vertical line wins. \n\nHope you like it!"
+    puts ""
+    sleep 2
   end
 
   def play_turn(player)
@@ -69,8 +90,8 @@ class TicTacToe
     sleep 1
     response = nil
     loop do
-      puts 'Do you wish to exit? [Y/n]'
-      response = gets.chomp
+      puts "\nDo you wish to exit? [Y/n]"
+      response = gets_with_error_handling 
       break if /\A[Yn]\Z/.match(response)
     end
     response == 'Y'
@@ -99,6 +120,10 @@ end
 
 # Represents a player playing tic-tac-toe
 class Player
+  include ErrorHandling
+
+  extend ErrorHandling
+
   attr_reader :symbol, :name
 
   def initialize(name, symbol)
@@ -109,14 +134,14 @@ class Player
   def choose_move
     puts "Hey #{name}!"
     print 'Select your play by entering a number 1-9: '
-    gets.chomp.to_i
+    gets_with_error_handling.to_i
   end
 
   def self.create_player(player)
     name = nil
     loop do 
-      print "Enter #{player}'s name. (only letters/numbers/spaces/apostrophes accepted): "
-      name = gets.chomp
+      print "Enter #{player}'s name (only letters/numbers/spaces/apostrophes accepted): "
+      name = gets_with_error_handling
       break unless /^(?![a-z0-9' ]*$)/i.match(name)
     end
 
@@ -137,12 +162,12 @@ def tic_tac_toe()
     player1 = Player.create_player("player 1")
     player2 = Player.create_player("player 2")
     tic_tac_toe = TicTacToe.new(player1, player2)
-    until tic_tac_toe.game_over
+    loop do
       tic_tac_toe.play_turn(player1)
-      break if tic_tac_toe.winner?(player1)
+      break if tic_tac_toe.winner?(player1) || tic_tac_toe.tie?
 
       tic_tac_toe.play_turn(player2)
-      break if tic_tac_toe.winner?(player2)
+      break if tic_tac_toe.winner?(player2) || tic_tac_toe.tie?
     end
     break if tic_tac_toe.exit?
   end
