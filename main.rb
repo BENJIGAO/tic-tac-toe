@@ -56,7 +56,7 @@ class TicTacToe
       move = player.choose_move
       unless valid_move?(move)
         puts 'Invalid entry. Please try again'
-        sleep 2
+        sleep 1.5
         next
       end
       break
