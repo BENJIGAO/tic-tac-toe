@@ -5,11 +5,12 @@ module Validation
   end
 end
 
+# Handles errors, specifically when user exits using ctrl+d (presently)
 module ErrorHandling
   def gets_with_error_handling
     begin
       gets.chomp
-    rescue => exception
+    rescue
       puts ""
       exit
     end
