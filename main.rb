@@ -44,7 +44,7 @@ class TicTacToe
   end
 
   def self.introduction
-    puts "Welcome to @BENJIGAO's Tic Tac Toe! \n\nIt's a two player game where the first person to place three of their marks in a diagonal, horizontal, or vertical line wins. \n\nHope you like it!"
+    puts "Welcome to @BENJIGAO's Tic Tac Toe!\n\nIt's a two player game where the first person to place three of their marks in a diagonal, horizontal, or vertical line wins.\n\nHope you like it!"
     puts ''
     sleep 2
   end
@@ -141,14 +141,14 @@ class Player
   def self.create_player(player)
     name = nil
     loop do
-      print "Enter #{player}'s name (only letters/numbers/spaces/apostrophes accepted): "
+      puts "Enter #{player}'s name (only letters/numbers/spaces/apostrophes accepted) "
       name = gets_with_error_handling
       break unless /^(?![a-z0-9' ]*$)/i.match(name)
     end
 
     symbol = nil
     loop do
-      print "Enter #{player}'s symbol (one character): "
+      puts "Enter #{player}'s symbol (one character): "
       symbol = gets.chomp
       break if symbol.length == 1
     end
@@ -159,6 +159,7 @@ end
 
 def tic_tac_toe
   loop do
+    sleep 1
     TicTacToe.introduction
     player1 = Player.create_player('player 1')
     player2 = Player.create_player('player 2')
